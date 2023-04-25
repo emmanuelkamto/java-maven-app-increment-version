@@ -33,9 +33,9 @@ pipeline {
                 script {
                     echo "building the docker image..."
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "docker build -t nanajanashia/demo-app:${IMAGE_NAME} ."
+                        sh "docker build -t emmanuelkamto/demo-app:${IMAGE_NAME} ."
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push nanajanashia/demo-app:${IMAGE_NAME}"
+                        sh "docker push emmanuelkamto/demo-app:${IMAGE_NAME}"
                     }
                 }
             }
@@ -46,22 +46,6 @@ pipeline {
                     echo 'deploying docker image to EC2...'
                 }
             }
-        }
-        stage('commit version update') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'gitlab-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        // git config here for the first time run
-                        sh 'git config --global user.email "jenkins@example.com"'
-                        sh 'git config --global user.name "jenkins"'
-
-                        sh "git remote set-url origin https://${USER}:${PASS}@gitlab.com/nanuchi/java-maven-app.git"
-                        sh 'git add .'
-                        sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:jenkins-jobs'
-                    }
-                }
-            }
-        }
-    }
+       }
+   }
 }

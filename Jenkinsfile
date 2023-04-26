@@ -55,7 +55,7 @@ pipeline {
                         sh 'git config --global user.email "jenkins@example.com"'
                         sh 'git config --global user.name "jenkins"'
 
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/emmanuelkamto/java-maven-app-increment-version.git"
+                        sh "ssh -T git@github.com/emmanuelkamto/java-maven-app-increment-version.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
                         sh 'git push origin HEAD:master'
